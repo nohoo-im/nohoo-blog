@@ -1,6 +1,7 @@
 ---
 title: 'AI 内容策略：从 0 到 1 的实操指南'
 description: '如何用 AI 工具建立可持续的内容生产体系'
+locale: 'zh'
 pubDate: 2024-01-10
 heroImage: '../../assets/blog-placeholder-2.jpg'
 ---

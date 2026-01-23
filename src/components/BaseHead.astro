@@ -13,10 +13,10 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const locale = getLocaleFromUrl(Astro.url);
 
-// Build alternate language URLs
+// Build alternate language URLs (English is root, Chinese is /zh)
 const pathname = Astro.url.pathname;
-const zhUrl = new URL(pathname.replace(/^\/en/, '') || '/', Astro.site);
-const enUrl = new URL(pathname.startsWith('/en') ? pathname : `/en${pathname}`, Astro.site);
+const enUrl = new URL(pathname.replace(/^\/zh/, '') || '/', Astro.site);
+const zhUrl = new URL(pathname.startsWith('/zh') ? pathname : `/zh${pathname}`, Astro.site);
 
 const { title, description, image = FallbackImage } = Astro.props;
 ---
@@ -38,9 +38,9 @@ const { title, description, image = FallbackImage } = Astro.props;
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Hreflang for i18n -->
-<link rel="alternate" hreflang="zh" href={zhUrl} />
 <link rel="alternate" hreflang="en" href={enUrl} />
-<link rel="alternate" hreflang="x-default" href={zhUrl} />
+<link rel="alternate" hreflang="zh" href={zhUrl} />
+<link rel="alternate" hreflang="x-default" href={enUrl} />
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>

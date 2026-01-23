@@ -14,14 +14,14 @@ const { title, description, pubDate, updatedDate, heroImage, slug } = Astro.prop
 const locale = getLocaleFromUrl(Astro.url);
 const t = getTranslations(locale);
 
-// Get all posts for related articles
+// Get all posts for related articles, filtered by locale
 const allPosts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
-// Get current post index and find related posts (excluding current)
+// Get current post index and find related posts (excluding current, same locale only)
 const currentSlug = Astro.url.pathname.split('/').filter(Boolean).pop();
-const otherPosts = allPosts.filter(p => p.id !== currentSlug);
+const otherPosts = allPosts.filter(p => p.id !== currentSlug && p.data.locale === locale);
 const relatedPosts = otherPosts.slice(0, 2);
 
 // Calculate reading time (rough estimate: 300 chars per minute for Chinese)
@@ -81,7 +81,7 @@ const readingTime = Math.max(1, Math.ceil(textLength / 300));
             <div class="grid gap-6 md:grid-cols-2">
               {relatedPosts.map((post) => (
                 <a
-                  href={locale === 'en' ? `/en/blog/${post.id}/` : `/blog/${post.id}/`}
+                  href={locale === 'zh' ? `/zh/blog/${post.id}/` : `/blog/${post.id}/`}
                   class="group block p-4 -m-4 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   <h3 class="font-semibold mb-1 group-hover:text-gray-600 transition-colors">
@@ -101,7 +101,7 @@ const readingTime = Math.max(1, Math.ceil(textLength / 300));
       <div class="border-t border-gray-100">
         <div class="max-w-3xl mx-auto px-4 py-6">
           <a
-            href={locale === 'en' ? '/en/blog' : '/blog'}
+            href={locale === 'zh' ? '/zh/blog' : '/blog'}
             class="text-sm text-gray-500 hover:text-gray-900 transition-colors"
           >
             &larr; {locale === 'zh' ? '返回文章列表' : 'Back to all posts'}

@@ -1,6 +1,7 @@
 ---
 title: '社交媒体自动化的边界'
 description: '哪些该自动化，哪些不该'
+locale: 'zh'
 pubDate: 2024-01-05
 heroImage: '../../assets/blog-placeholder-3.jpg'
 ---

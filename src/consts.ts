@@ -58,6 +58,6 @@ export function getTranslations(locale: Locale) {
 
 export function getLocaleFromUrl(url: URL): Locale {
   const [, locale] = url.pathname.split('/');
-  if (locale === 'en') return 'en';
-  return 'zh';
+  if (locale === 'zh') return 'zh';
+  return 'en';
 }

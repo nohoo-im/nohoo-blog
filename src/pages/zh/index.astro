@@ -5,21 +5,22 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
-import { getTranslations, SITE_TITLE, SITE_TAGLINE_EN } from '../../consts';
+import { getTranslations, SITE_TITLE, SITE_TAGLINE_ZH } from '../../consts';
 
-const t = getTranslations('en');
-const pageTitle = `${SITE_TITLE} - ${SITE_TAGLINE_EN}`;
+const t = getTranslations('zh');
+const pageTitle = `${SITE_TITLE} - ${SITE_TAGLINE_ZH}`;
 
-const posts = (await getCollection('blog')).sort(
+const allPosts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+const posts = allPosts.filter(p => p.data.locale === 'zh');
 
 const latestPost = posts[0];
 const recentPosts = posts.slice(1, 4);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh">
   <head>
     <BaseHead title={pageTitle} description={t.siteDescription} />
   </head>
@@ -30,8 +31,8 @@ const recentPosts = posts.slice(1, 4);
       {latestPost && (
         <section>
           <div class="max-w-4xl mx-auto px-4 py-12">
-            <p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-6">Latest</p>
-            <a href={`/en/blog/${latestPost.id}/`} class="group block md:flex md:gap-8 items-start">
+            <p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-6">最新文章</p>
+            <a href={`/zh/blog/${latestPost.id}/`} class="group block md:flex md:gap-8 items-start">
               {latestPost.data.heroImage && (
                 <div class="md:w-1/2 mb-4 md:mb-0">
                   <Image
@@ -64,14 +65,14 @@ const recentPosts = posts.slice(1, 4);
         <section class="border-t border-gray-100 bg-gray-50">
           <div class="max-w-4xl mx-auto px-4 py-12">
             <div class="flex items-center justify-between mb-8">
-              <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">More Posts</p>
-              <a href="/en/blog" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">
-                View all &rarr;
+              <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">更多文章</p>
+              <a href="/zh/blog" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+                查看全部 &rarr;
               </a>
             </div>
             <div class="grid gap-8 md:grid-cols-3">
               {recentPosts.map((post) => (
-                <a href={`/en/blog/${post.id}/`} class="group block">
+                <a href={`/zh/blog/${post.id}/`} class="group block">
                   {post.data.heroImage && (
                     <Image
                       width={400}

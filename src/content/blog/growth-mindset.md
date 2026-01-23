@@ -1,6 +1,7 @@
 ---
 title: '用户增长的本质'
 description: '增长不是 hack，是价值交换'
+locale: 'zh'
 pubDate: 2024-01-01
 heroImage: '../../assets/blog-placeholder-4.jpg'
 ---

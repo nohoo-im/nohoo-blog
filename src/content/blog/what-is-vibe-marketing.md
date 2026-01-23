@@ -1,6 +1,7 @@
 ---
 title: '什么是 Vibe Marketing'
 description: '理解 AI 时代的新营销范式：从数据驱动到氛围驱动'
+locale: 'zh'
 pubDate: 2024-01-15
 heroImage: '../../assets/blog-placeholder-1.jpg'
 ---

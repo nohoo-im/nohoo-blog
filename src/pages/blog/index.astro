@@ -7,15 +7,16 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import { getTranslations, SITE_TITLE } from '../../consts';
 
-const t = getTranslations('zh');
+const t = getTranslations('en');
 
-const posts = (await getCollection('blog')).sort(
+const allPosts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+const posts = allPosts.filter(p => p.data.locale === 'en');
 ---
 
 <!doctype html>
-<html lang="zh">
+<html lang="en">
   <head>
     <BaseHead title={`${t.blog.title} | ${SITE_TITLE}`} description={t.siteDescription} />
   </head>
@@ -23,7 +24,7 @@ const posts = (await getCollection('blog')).sort(
     <Header />
     <main class="flex-1 max-w-4xl mx-auto px-4 py-12">
       <h1 class="text-3xl font-semibold mb-2">{t.blog.title}</h1>
-      <p class="text-gray-500 mb-10">关于 AI 营销与用户增长的思考</p>
+      <p class="text-gray-500 mb-10">Thoughts on AI marketing and user growth</p>
 
       <div class="space-y-10">
         {posts.map((post, index) => (
@@ -58,7 +59,7 @@ const posts = (await getCollection('blog')).sort(
 
       {posts.length === 0 && (
         <p class="text-center text-gray-500 py-12">
-          暂无文章
+          No posts yet
         </p>
       )}
     </main>
