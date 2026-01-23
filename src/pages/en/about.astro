@@ -1,0 +1,31 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { getTranslations } from '../../consts';
+
+const t = getTranslations('en');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={`${t.nav.about} - ${t.siteTitle}`} description={t.siteDescription} />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header />
+    <main class="flex-1 max-w-4xl mx-auto px-4 py-16">
+      <h1 class="text-3xl font-semibold mb-8">{t.nav.about}</h1>
+      <div class="prose">
+        <p>
+          Vibe Marketing is a blog about smart marketing using AI-powered tools.
+        </p>
+        <p>
+          We focus on sharing practical experience and best practices for using nohoo.im
+          combined with various third-party tools for marketing and user growth.
+        </p>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

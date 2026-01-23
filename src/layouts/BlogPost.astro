@@ -1,0 +1,114 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { getLocaleFromUrl, getTranslations } from '../consts';
+
+type Props = CollectionEntry<'blog'>['data'] & { slug?: string };
+
+const { title, description, pubDate, updatedDate, heroImage, slug } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+const t = getTranslations(locale);
+
+// Get all posts for related articles
+const allPosts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Get current post index and find related posts (excluding current)
+const currentSlug = Astro.url.pathname.split('/').filter(Boolean).pop();
+const otherPosts = allPosts.filter(p => p.id !== currentSlug);
+const relatedPosts = otherPosts.slice(0, 2);
+
+// Calculate reading time (rough estimate: 300 chars per minute for Chinese)
+const content = await Astro.slots.render('default');
+const textLength = content.replace(/<[^>]*>/g, '').length;
+const readingTime = Math.max(1, Math.ceil(textLength / 300));
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <BaseHead title={`${title} - ${t.siteTitle}`} description={description} image={heroImage} />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header />
+    <main class="flex-1">
+      <article>
+        {heroImage && (
+          <div class="max-w-4xl mx-auto px-4 pt-8">
+            <Image
+              width={1020}
+              height={510}
+              src={heroImage}
+              alt={title}
+              class="w-full rounded-xl"
+            />
+          </div>
+        )}
+        <div class="max-w-3xl mx-auto px-4 py-8">
+          <header class="mb-8 text-center">
+            <div class="text-sm text-gray-500 mb-4 flex items-center justify-center gap-3">
+              <FormattedDate date={pubDate} />
+              <span class="text-gray-300">·</span>
+              <span>{readingTime} min read</span>
+              {updatedDate && (
+                <>
+                  <span class="text-gray-300">·</span>
+                  <span class="italic">Updated: <FormattedDate date={updatedDate} /></span>
+                </>
+              )}
+            </div>
+            <h1 class="text-3xl md:text-4xl font-semibold">{title}</h1>
+          </header>
+          <div class="prose max-w-none">
+            <slot />
+          </div>
+        </div>
+      </article>
+
+      <!-- Related Posts -->
+      {relatedPosts.length > 0 && (
+        <section class="border-t border-gray-100">
+          <div class="max-w-3xl mx-auto px-4 py-12">
+            <p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-6">
+              {locale === 'zh' ? '继续阅读' : 'Continue Reading'}
+            </p>
+            <div class="grid gap-6 md:grid-cols-2">
+              {relatedPosts.map((post) => (
+                <a
+                  href={locale === 'en' ? `/en/blog/${post.id}/` : `/blog/${post.id}/`}
+                  class="group block p-4 -m-4 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <h3 class="font-semibold mb-1 group-hover:text-gray-600 transition-colors">
+                    {post.data.title}
+                  </h3>
+                  <p class="text-sm text-gray-500 line-clamp-2">
+                    {post.data.description}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <!-- Back to Blog -->
+      <div class="border-t border-gray-100">
+        <div class="max-w-3xl mx-auto px-4 py-6">
+          <a
+            href={locale === 'en' ? '/en/blog' : '/blog'}
+            class="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+          >
+            &larr; {locale === 'zh' ? '返回文章列表' : 'Back to all posts'}
+          </a>
+        </div>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

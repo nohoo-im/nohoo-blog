@@ -1,0 +1,99 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { getTranslations } from '../consts';
+
+const t = getTranslations('zh');
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const latestPost = posts[0];
+const recentPosts = posts.slice(1, 4);
+---
+
+<!doctype html>
+<html lang="zh">
+  <head>
+    <BaseHead title={t.siteTitle} description={t.siteDescription} />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header />
+    <main class="flex-1">
+      <!-- Featured Post -->
+      {latestPost && (
+        <section>
+          <div class="max-w-4xl mx-auto px-4 py-12">
+            <p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-6">最新文章</p>
+            <a href={`/blog/${latestPost.id}/`} class="group block md:flex md:gap-8 items-start">
+              {latestPost.data.heroImage && (
+                <div class="md:w-1/2 mb-4 md:mb-0">
+                  <Image
+                    width={600}
+                    height={300}
+                    src={latestPost.data.heroImage}
+                    alt={latestPost.data.title}
+                    class="w-full aspect-[2/1] object-cover rounded-xl"
+                  />
+                </div>
+              )}
+              <div class="md:w-1/2">
+                <h2 class="text-2xl font-semibold mb-3 group-hover:text-gray-600 transition-colors">
+                  {latestPost.data.title}
+                </h2>
+                <p class="text-gray-500 mb-4 line-clamp-2">
+                  {latestPost.data.description}
+                </p>
+                <p class="text-sm text-gray-400">
+                  <FormattedDate date={latestPost.data.pubDate} />
+                </p>
+              </div>
+            </a>
+          </div>
+        </section>
+      )}
+
+      <!-- Recent Posts -->
+      {recentPosts.length > 0 && (
+        <section class="border-t border-gray-100 bg-gray-50">
+          <div class="max-w-4xl mx-auto px-4 py-12">
+            <div class="flex items-center justify-between mb-8">
+              <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">更多文章</p>
+              <a href="/blog" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+                查看全部 &rarr;
+              </a>
+            </div>
+            <div class="grid gap-8 md:grid-cols-3">
+              {recentPosts.map((post) => (
+                <a href={`/blog/${post.id}/`} class="group block">
+                  {post.data.heroImage && (
+                    <Image
+                      width={400}
+                      height={200}
+                      src={post.data.heroImage}
+                      alt={post.data.title}
+                      class="w-full aspect-[2/1] object-cover rounded-lg mb-3"
+                    />
+                  )}
+                  <h3 class="font-semibold mb-2 group-hover:text-gray-600 transition-colors line-clamp-2">
+                    {post.data.title}
+                  </h3>
+                  <p class="text-sm text-gray-400">
+                    <FormattedDate date={post.data.pubDate} />
+                  </p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+    </main>
+    <Footer />
+  </body>
+</html>

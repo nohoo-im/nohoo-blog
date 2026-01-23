@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/* Design System: Wabi-sabi + Bauhaus - Light Theme */
+
+@theme {
+  /* Light mode colors */
+  --color-background: #ffffff;
+  --color-background-secondary: #f9fafb;
+  --color-border: #e5e7eb;
+  --color-text-secondary: #6b7280;
+  --color-text-primary: #111827;
+
+  /* Blue - only for state indication */
+  --color-accent-light: #dbeafe;
+  --color-accent: #2563eb;
+  --color-accent-border: #3b82f6;
+
+  /* Semantic colors */
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --color-warning: #ca8a04;
+}
+
+/* Base styles */
+body {
+  @apply bg-white text-gray-900 antialiased;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-semibold text-gray-900 leading-tight;
+}
+
+h1 { @apply text-3xl md:text-4xl; }
+h2 { @apply text-2xl md:text-3xl; }
+h3 { @apply text-xl md:text-2xl; }
+h4 { @apply text-lg md:text-xl; }
+
+/* Links */
+a:not(.btn) {
+  @apply text-gray-900 transition-colors;
+}
+
+a:not(.btn):hover {
+  @apply text-gray-600;
+}
+
+/* Prose (blog content) */
+.prose {
+  @apply text-gray-700 leading-relaxed;
+}
+
+.prose p {
+  @apply mb-6;
+}
+
+.prose h2 {
+  @apply mt-12 mb-4;
+}
+
+.prose h3 {
+  @apply mt-8 mb-3;
+}
+
+.prose ul, .prose ol {
+  @apply mb-6 pl-6;
+}
+
+.prose li {
+  @apply mb-2;
+}
+
+.prose code {
+  @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm;
+}
+
+.prose pre {
+  @apply bg-gray-900 text-gray-100 p-4 rounded-xl overflow-x-auto mb-6;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic text-gray-600;
+}
+
+.prose img {
+  @apply rounded-xl;
+}
+
+/* Utility classes */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -1,0 +1,55 @@
+---
+import { getLocaleFromUrl, getTranslations } from '../consts';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = getTranslations(locale);
+const otherLocale = locale === 'zh' ? 'en' : 'zh';
+
+// Build language switch URL
+const pathname = Astro.url.pathname;
+let switchUrl: string;
+if (locale === 'zh') {
+  switchUrl = `/en${pathname}`;
+} else {
+  switchUrl = pathname.replace(/^\/en/, '') || '/';
+}
+---
+
+<header class="sticky top-0 z-50 bg-white border-b border-gray-100">
+  <nav class="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
+    <!-- Logo -->
+    <a href={locale === 'en' ? '/en' : '/'} class="flex items-center gap-2 font-semibold">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none" class="flex-shrink-0">
+        <rect width="32" height="32" rx="6" fill="currentColor"/>
+        <rect x="4" y="4" width="10" height="10" rx="2" stroke="white" stroke-width="1.5" fill="none"/>
+        <rect x="18" y="4" width="10" height="10" rx="2" stroke="white" stroke-width="1.5" fill="none"/>
+        <rect x="4" y="18" width="10" height="10" rx="2" stroke="white" stroke-width="1.5" fill="none"/>
+        <rect x="18" y="18" width="10" height="10" rx="2" fill="white"/>
+      </svg>
+      <span class="hidden sm:inline">Vibe Marketing</span>
+    </a>
+
+    <!-- Navigation -->
+    <div class="flex items-center gap-6">
+      <div class="flex items-center gap-4 text-sm">
+        <a href={locale === 'en' ? '/en' : '/'} class="text-gray-600 hover:text-gray-900 transition-colors">
+          {t.nav.home}
+        </a>
+        <a href={locale === 'en' ? '/en/blog' : '/blog'} class="text-gray-600 hover:text-gray-900 transition-colors">
+          {t.nav.blog}
+        </a>
+        <a href={locale === 'en' ? '/en/about' : '/about'} class="text-gray-600 hover:text-gray-900 transition-colors">
+          {t.nav.about}
+        </a>
+      </div>
+
+      <!-- Language Switcher -->
+      <a
+        href={switchUrl}
+        class="px-2 py-1 text-xs font-medium text-gray-500 hover:text-gray-900 border border-gray-200 rounded transition-colors"
+      >
+        {otherLocale === 'en' ? 'EN' : '中文'}
+      </a>
+    </div>
+  </nav>
+</header>
