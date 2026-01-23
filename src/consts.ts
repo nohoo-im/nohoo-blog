@@ -1,5 +1,7 @@
 // Site configuration
 export const SITE_TITLE = 'Vibe Marketing';
+export const SITE_TAGLINE_ZH = 'AI 营销与增长博客';
+export const SITE_TAGLINE_EN = 'AI Marketing & Growth Blog';
 export const SITE_DESCRIPTION = 'AI-powered marketing with nohoo.im';
 
 // i18n translations
